@@ -1,0 +1,26 @@
+<% include ../partials/header %>
+
+
+
+<div class="container">
+    
+  <div class="row justify-content-center align-items-center">
+    <div class="col-12 col-md-4">
+      <h1 class="text-center">
+        <%=currentUser.username%>'s Links
+      </h1>
+    </div>
+  </div>
+  <div class="row justify-content-center align-items-center">
+    <div class="col-12 col-md-4">
+      <a class="btn btn-primary btn-block" href="<%= currentUser.linkone %>" role="button">Link One</a>
+      <a class="btn btn-primary btn-block" href="<%= currentUser.linktwo %>" role="button">Link Two</a>
+      <a class="btn btn-primary btn-block" href="<%= currentUser.linkthree %>" role="button">Link Three</a>
+    </div>
+  </div>
+
+</div>
+
+
+
+<% include ../partials/footer %>

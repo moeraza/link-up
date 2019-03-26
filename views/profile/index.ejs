@@ -1,0 +1,16 @@
+<% include ../partials/header %>
+
+
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <h1 class="text-center">This is the user dashboard</h1>
+    </div>
+    <div class="row justify-content-center align-items-center">
+                    <a href="/profile/<%= currentUser._id %>">
+                <button type="button" class="btn btn-primary">Show Page</button>
+            </a>
+    </div>
+</div>
+
+
+<% include ../partials/footer %>
