@@ -1,7 +1,10 @@
 var mongoose = require("mongoose");
 var passportLocalMongoose = require("passport-local-mongoose");
+var Schema = mongoose.Schema;
 
+// USER SCHEMA BEFORE
 var UserSchema = new mongoose.Schema({
+    _id: Schema.Types.ObjectId,
     username: String,
     password: String,
     avatar: String, 
@@ -10,9 +13,14 @@ var UserSchema = new mongoose.Schema({
     email: String,
     linkone: String,
     linktwo: String,
-    linkthree: String
+    linkthree: String,
+    links: [
+      {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: "Link"
+      }
+   ]
 });
-
 
 
 UserSchema.plugin(passportLocalMongoose);
