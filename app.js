@@ -8,6 +8,8 @@ var express                 = require("express"),
     passportLocalMongoose   = require("passport-local-mongoose"),
     methodOverride          = require("method-override"),
     flash                   = require("connect-flash");
+
+var middleware              = require("./middleware");
     
 mongoose.connect("mongodb://localhost/linkup");
 var app = express();
@@ -118,6 +120,7 @@ app.get("/:username", function(req, res) {
 
 });
 
+// CREATE - add new link
 app.get("/:username/new", function(req, res) {
   User.findOne({username: req.params.username}, function(err, foundUser) {
     if(err) {
@@ -160,17 +163,51 @@ app.post("/:username", isLoggedIn, function(req, res) {
 
 });
 
+// EDIT - edit link details
+app.get("/:username/:link_id/edit", middleware.checkLinkOwnership, function(req, res) {
+    Link.findById(req.params.link_id, function(err, foundLink){
+        if(err){
+            console.log(err)
+        } else {
+            console.log("We found the link: ", foundLink);
+            res.render("profile/edit", {link: foundLink});
+        }
+    })
+});
+
+
+// UPDATE - put route to update link
+app.put("/:username/:link_id",middleware.checkLinkOwnership, function(req, res){
+    // find and update the correct link
+    var linkdata = {text: req.body.text, name: req.body.name}
+    Link.findByIdAndUpdate(req.params.link_id, linkdata, function(err, updatedCampground){
+       if(err){
+           console.log(err);
+           res.redirect("/");
+       } else {
+           //redirect somewhere(show page)
+           res.redirect("/" + req.params.username);
+       }
+    });
+});
+
+// DESTROY - delete link
+app.delete("/:username/:link_id", middleware.checkLinkOwnership, function(req, res){
+    Link.findByIdAndRemove(req.params.link_id, function(err){
+        if(err){
+            console.log("ERROR:", err)
+            res.redirect("/" + req.params.username);
+        } else {
+            res.redirect("/" + req.params.username);
+        }
+    })
+})
+
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next();
     }
     res.redirect("/login");
-}
-
-function loggedIn(){
-    if(req.isAuthenticated()){
-        var loggedUser = req.user;
-    }
 }
 
 
