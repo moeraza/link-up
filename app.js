@@ -32,10 +32,10 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next){
-   res.locals.currentUser = req.user;
-  res.locals.success = req.flash('success');
-  res.locals.error = req.flash('error');
-   next();
+    res.locals.currentUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
 });
 
 //============
@@ -44,10 +44,6 @@ app.use(function(req, res, next){
 
 app.get("/", function(req, res){
     res.render("home");
-});
-
-app.get("/secret",isLoggedIn, function(req, res){
-   res.render("secret"); 
 });
 
 // Auth Routes
@@ -77,7 +73,7 @@ app.post("/register", function(req, res){
         }
         passport.authenticate("local")(req, res, function(){
             req.flash("success", "Welcome to LinkUp " + user.username);
-            res.redirect("/profile");
+            res.redirect("/" + user.username);
         });
     });
 });
@@ -90,13 +86,13 @@ app.get("/login", function(req, res){
 //login logic
 //middleware
 app.post("/login", passport.authenticate("local", {
-    successRedirect: "/profile",
+    successRedirect: "/",
     failureRedirect: "/login"
 }) ,function(req, res){
     
 });
 
-app.get("/profile", function(req, res){
+app.get("/:username/profile", function(req, res){
    res.render("profile/"); 
 });
 
@@ -107,22 +103,23 @@ app.get("/logout", function(req, res){
 });
 
 
-// USER PROFILE
-app.get("/profile/:user_id", function(req, res) {
-    User.findById(req.params.user_id).
-    populate("links").
-    exec(function(err, foundUser){
+// SHOW - USER PROFILE w/ links
+app.get("/:username", function(req, res) {
+    Link.find({"author.username": req.params.username}, function(err, foundLinks){
         if(err){
-            console.log("Reached and error:", err);
+            console.log(err);
+            res.render("/");
         } else {
-            console.log("found user and should have populated:",foundUser);
-            res.render("profile/show", {currentUser: foundUser})
+            console.log(req.params.username);
+            console.log(foundLinks)
+            res.render("profile/show", {links: foundLinks})
         }
     })
+
 });
 
-app.get("/profile/:user_id/new", function(req, res) {
-  User.findById(req.params.user_id, function(err, foundUser) {
+app.get("/:username/new", function(req, res) {
+  User.findOne({username: req.params.username}, function(err, foundUser) {
     if(err) {
       req.flash("error", "Something went wrong.");
       return res.redirect("/");
@@ -132,13 +129,13 @@ app.get("/profile/:user_id/new", function(req, res) {
   });
 
 // CREATE - add a new link to user profile...
-app.post("/profile/:user_id", isLoggedIn, function(req, res) {
+app.post("/:username", isLoggedIn, function(req, res) {
   var newLink = {
     name: req.body.name,
-    text: req.body.text
+    text: "http://" + req.body.text
   };
   
-  User.findById(req.params.user_id, function(err, foundUser) {
+  User.findOne({username: req.params.username}, function(err, foundUser) {
       if(err){
           console.log("errror found:", err)
       } else{
@@ -154,7 +151,7 @@ app.post("/profile/:user_id", isLoggedIn, function(req, res) {
                   foundUser.save();
                   console.log(link);
                   req.flash("success", "Successfully added link");
-                  res.redirect("/profile/" + foundUser.id);
+                  res.redirect("/" + foundUser.username);
                   
               }
           });
@@ -168,6 +165,12 @@ function isLoggedIn(req, res, next){
         return next();
     }
     res.redirect("/login");
+}
+
+function loggedIn(){
+    if(req.isAuthenticated()){
+        var loggedUser = req.user;
+    }
 }
 
 

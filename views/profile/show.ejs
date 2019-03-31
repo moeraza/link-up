@@ -4,19 +4,26 @@
   <div class="row justify-content-center align-items-center">
     <div class="col-12 col-md-4">
       <h1 class="text-center">
-        <%=currentUser.username%>'s Links
+        <%= links[1].author.username %>'s Links
       </h1>
     </div>
   </div>
   <div class="row justify-content-center align-items-center">
     <div class="col-12 col-md-4">
-      <% currentUser.links.forEach(function(link){ %>
-        <a class="btn btn-primary btn-block" href="https://<%= link.text %>" role="button"><%= link.name %></a>
+      <% links.forEach(function(link){ %>
+      
+        <a class="btn btn-primary btn-block" href="<%= link.text %>" role="button"><%= link.name %></a>
+           <!--&& link.author.id.equals(loggedUser._id)-->
+           
+          <% if (currentUser){ %>
+            <i class="far fa-trash-alt"></i>
+        <% } %>
 
       <% }); %>
       
-      <a class="btn btn-success" href="/profile/<%= currentUser._id %>/new">Add New Link</a>
-
+      <% if (currentUser){ %>
+      <a class="btn btn-success" href="/<%= currentUser.username %>/new">Add New Link</a>
+       <% } %>
     </div>
   </div>
 

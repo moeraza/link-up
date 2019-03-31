@@ -2,22 +2,29 @@
 
 
 <div class="container">
-    <div class="row justify-content-center">
+  <div class="row justify-content-center">
 
-  <div class="col-12 col-md-4">
-        <h1 class="text-center">Add New Link</h1>
-        <form action="/profile/<%= currentUser._id %>" method="POST">
-            <div class="form-group">
-                <input type="text" class="form-control" name="text" placeholder="link">
+    <div class="col-12 col-md-4">
+      <h1 class="text-center">Add New Link</h1>
+      <form action="/<%= currentUser.username %>" method="POST">
+        <div class="form-group">
+          <input type="text" class="form-control" name="name" placeholder="name for link">
+        </div>
+        
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon3">http://</span>
             </div>
-            <div class="form-group">
-                <input type="text" class="form-control" name="name" placeholder="name for link">
-            </div>
-            <button type="submit" class="btn btn-lg btn-primary btn-block">Add Link</button>
-        </form>
+            <input type="text" class="form-control" aria-describedby="basic-addon3" name="text" placeholder="link">
+          </div>
+        </div>
+        
+        <button type="submit" class="btn btn-lg btn-primary btn-block">Add Link</button>
+      </form>
     </div>
-     
-</div>
+
+  </div>
 </div>
 
 <% include ../partials/footer %>
