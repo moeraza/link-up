@@ -3,3 +3,18 @@
     padding: 10px;
     margin: 10px;
 }
+
+#delete-form {
+    display: inline;
+    float: right;
+}
+
+#edit-button {
+    display: inline;
+    
+}
+
+#addlinkbutton {
+    display: block;
+    margin-top: 10px;
+}

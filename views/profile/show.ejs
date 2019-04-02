@@ -4,7 +4,7 @@
   <div class="row justify-content-center align-items-center">
     <div class="col-12 col-md-4">
       <h1 class="text-center">
-        <%= links[1].author.username %>'s Links
+        <%= username %>'s Links
       </h1>
     </div>
   </div>
@@ -12,22 +12,26 @@
     <div class="col-12 col-md-4">
       <% links.forEach(function(link){ %>
       
-        <a class="btn btn-primary btn-block" href="<%= link.text %>" role="button"><%= link.name %></a>
+        <a class="btn btn-primary btn-block linkBtn" href="<%= link.text %>" role="button"><%= link.name %></a>
            <!--&& link.author.id.equals(loggedUser._id)-->
            
-          <% if (currentUser&& currentUser._id.equals(currentUser._id)){ %>
-          <a class="btn btn-xs btn-warning" href="/<%= currentUser.username %>/<%= link._id %>/edit">Edit</a>
+          <% if (currentUser && currentUser._id.equals(link.author.id)){ %>
+          <a class="btn btn-sm btn-warning" id="edit-button" href="/<%= currentUser.username %>/<%= link._id %>/edit">Edit</a>
           <form id="delete-form" action="/<%= currentUser.username%>/<%= link._id %>?_method=DELETE" method="POST">
-            <button class="btn btn-xs btn-danger"><i class="far fa-trash-alt"></i>Delete</button>
+            <button class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i>Delete</button>
           </form>
             
         <% } %>
 
       <% }); %>
       
-      <% if (currentUser){ %>
-      <a class="btn btn-success" href="/<%= currentUser.username %>/new">Add New Link</a>
+      <% if (currentUser && currentUser._id.equals(currentUser._id)){ %>
+      <a class="btn btn-success" id="addlinkbutton" href="/<%= currentUser.username %>/new">Add New Link</a>
        <% } %>
+       
+       <button id="myButton">Test</button>
+        <!--<button class="testingThisButton">Test2</button>-->
+
     </div>
   </div>
 

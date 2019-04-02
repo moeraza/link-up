@@ -4,10 +4,12 @@ var express                 = require("express"),
     bodyParser              = require("body-parser"),
     User                    = require("./models/user"),
     Link                    = require("./models/links"),
+    Click                   = require("./models/clicks"),
     LocalStrategy           = require("passport-local"),
     passportLocalMongoose   = require("passport-local-mongoose"),
     methodOverride          = require("method-override"),
     flash                   = require("connect-flash");
+    // fetch                   = require("node-fetch");
 
 var middleware              = require("./middleware");
     
@@ -85,6 +87,7 @@ app.post("/register", function(req, res){
 app.get("/login", function(req, res){
    res.render("login"); 
 });
+
 //login logic
 //middleware
 app.post("/login", passport.authenticate("local", {
@@ -97,11 +100,11 @@ app.post("/login", passport.authenticate("local", {
 app.get("/:username/profile", function(req, res){
    res.render("profile/"); 
 });
-
+// LOGOUT LOGIC
 app.get("/logout", function(req, res){
     req.logout();
     req.flash("success", "Logged you out!");
-    res.redirect("/");
+    res.redirect("back");
 });
 
 
@@ -113,8 +116,8 @@ app.get("/:username", function(req, res) {
             res.render("/");
         } else {
             console.log(req.params.username);
-            console.log(foundLinks)
-            res.render("profile/show", {links: foundLinks})
+            console.log(foundLinks);
+            res.render("profile/show", {links: foundLinks, username: req.params.username});
         }
     })
 
@@ -202,6 +205,30 @@ app.delete("/:username/:link_id", middleware.checkLinkOwnership, function(req, r
         }
     })
 })
+
+// CREATE ---> Add link counter
+
+// app.post("/:username/:link_id", function(req, res){
+    
+// })
+
+app.post('/:username/clicked', function(req, res){
+  var newClick = new Click({
+      clickTime: Date()
+  });
+  console.log(newClick);
+  Click.create(newClick, function(err, click) {
+      if(err){
+          req.flash("error", "Something went wrong");
+          console.log(err);
+      } else {
+          click.save();
+          console.log(click);
+          req.flash("success", "Successfully added click");
+        //   res.redirect("/" + foundUser.username);
+      }
+  });
+});
 
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
