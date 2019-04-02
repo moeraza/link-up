@@ -1,29 +1,13 @@
 console.log('Client-side code running');
 
-// var buttons = document.getElementById("testingThisButton");
-
-// for(var i=0; i < buttons.length; i++){
-//     buttons.addEventListener("click", function(e){
-//           fetch('/clicked', {method: 'POST'})
-//     .then(function(response) {
-//       if(response.ok) {
-//         console.log('click was recorded');
-//         return;
-//       }
-//       throw new Error('Request failed.');
-//     })
-//     .catch(function(error) {
-//       console.log(error);
-//     });
-    
-//     });
-// }
+var buttons = document.getElementsByClassName("myButton");
 
 
-// TESTING ORIGINAL CODE: 
+// Listen to when a user clicks any button, then fetch a
+// post request to the servercd
 
-const button = document.getElementById('myButton');
-button.addEventListener('click', function(e) {
+for(var i=0; i < buttons.length; i++){
+buttons[i].addEventListener('click', function(e) {
   console.log('button was clicked');
 
   fetch('/:username/clicked', {method: 'POST'})
@@ -35,9 +19,10 @@ button.addEventListener('click', function(e) {
       throw new Error('Request failed.');
     })
     .catch(function(error) {
-      console.log(error);
+      console.log("This is the error:",error);
     });
 });
+}
 
 // setInterval(function() {
 //   fetch('/clicks', {method: 'GET'})

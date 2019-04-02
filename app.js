@@ -206,7 +206,7 @@ app.delete("/:username/:link_id", middleware.checkLinkOwnership, function(req, r
     })
 })
 
-// CREATE ---> Add link counter
+// CREATE ---> POST - Add link counter
 
 // app.post("/:username/:link_id", function(req, res){
     
