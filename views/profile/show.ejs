@@ -11,12 +11,10 @@
   <div class="row justify-content-center align-items-center">
     <div class="col-12 col-md-4">
       <% links.forEach(function(link){ %>
-      <!--<div class="linkBtn">-->
+      
         <a class="btn btn-primary btn-block myButton" href="<%= link.text %>" role="button">
           <%= link.name %>
         </a>
-      <!--</div>-->
-           <!--&& link.author.id.equals(loggedUser._id)-->
            
           <% if (currentUser && currentUser._id.equals(link.author.id)){ %>
           <a class="btn btn-sm btn-warning" id="edit-button" href="/<%= currentUser.username %>/<%= link._id %>/edit">Edit</a>
@@ -31,6 +29,8 @@
       <% if (currentUser && currentUser._id.equals(currentUser._id)){ %>
       <a class="btn btn-success" id="addlinkbutton" href="/<%= currentUser.username %>/new">Add New Link</a>
        <% } %>
+       
+       <button class="myButton">Test Button</button>
 
     </div>
   </div>

@@ -212,18 +212,20 @@ app.delete("/:username/:link_id", middleware.checkLinkOwnership, function(req, r
     
 // })
 
-app.post('/:username/clicked', function(req, res){
+app.post('/:username/:buttonName', function(req, res){
   var newClick = new Click({
-      clickTime: Date()
+      clickTime: Date(),
   });
-  console.log(newClick);
+  console.log("Here is the generated click from server:", newClick);
+  console.log("Here is the user name:", req.params.username);
+  console.log("Here is the button name:", req.params.buttonName);
   Click.create(newClick, function(err, click) {
       if(err){
           req.flash("error", "Something went wrong");
           console.log(err);
       } else {
           click.save();
-          console.log(click);
+          console.log("Here is the click saved in the DB:", click);
           req.flash("success", "Successfully added click");
         //   res.redirect("/" + foundUser.username);
       }
