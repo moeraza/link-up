@@ -12,10 +12,10 @@
     <div class="col-12 col-md-4">
       <% links.forEach(function(link){ %>
       
-        <a class="btn btn-primary btn-block myButton" href="<%= link.text %>" role="button">
-          <%= link.name %>
-        </a>
-           
+      <form id="links-form" action="/<%= username %>/<%= link._id %>" method="POST">
+        <button type="submit" class="btn btn-primary"><%= link.name %></button>
+      </form>
+      
           <% if (currentUser && currentUser._id.equals(link.author.id)){ %>
           <a class="btn btn-sm btn-warning" id="edit-button" href="/<%= currentUser.username %>/<%= link._id %>/edit">Edit</a>
           <form id="delete-form" action="/<%= currentUser.username%>/<%= link._id %>?_method=DELETE" method="POST">
@@ -29,8 +29,6 @@
       <% if (currentUser && currentUser._id.equals(currentUser._id)){ %>
       <a class="btn btn-success" id="addlinkbutton" href="/<%= currentUser.username %>/new">Add New Link</a>
        <% } %>
-       
-       <button class="myButton">Test Button</button>
 
     </div>
   </div>

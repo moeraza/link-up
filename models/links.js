@@ -9,7 +9,14 @@ var mongoose = require("mongoose");
         ref: "User"
       },
       username: String
-    }
+    }, 
+   clicks: [
+       {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Click"
+       }
+       
+       ]
 }, {
   usePushEach: true
 });

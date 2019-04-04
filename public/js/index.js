@@ -7,24 +7,24 @@ console.log("did this work:",username)
 // Listen to when a user clicks any button, then fetch a
 // post request to the servercd
 
-for(var i=0; i < buttons.length; i++){
-buttons[i].addEventListener('click', function(e) {
-  console.log('button was clicked');
-  console.log("Here is the clicked button:", this.innerHTML);
+// for(var i=0; i < buttons.length; i++){
+// buttons[i].addEventListener('click', function(e) {
+//   console.log('button was clicked');
+//   console.log("Here is the clicked button:", this.innerHTML);
 
-  fetch("/:username/" + this.innerHTML, {method: 'POST'})
-    .then(function(response) {
-      if(response.ok) {
-        console.log('click was recorded', this.innerHTML);
-        return;
-      }
-      throw new Error('Request failed.');
-    })
-    .catch(function(error) {
-      console.log("This is the error:",error);
-    });
-});
-}
+//   fetch("/:username/" + this.innerHTML, {method: 'POST'})
+//     .then(function(response) {
+//       if(response.ok) {
+//         console.log('click was recorded', this.innerHTML);
+//         return;
+//       }
+//       throw new Error('Request failed.');
+//     })
+//     .catch(function(error) {
+//       console.log("This is the error:",error);
+//     });
+// });
+// }
 
 // setInterval(function() {
 //   fetch('/clicks', {method: 'GET'})
