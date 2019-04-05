@@ -123,6 +123,10 @@ app.get("/:username", function(req, res) {
 
 });
 
+// ========================================================================== //
+// LINKS - Creating, editing, deleting, updating. 
+// ========================================================================== //
+
 // CREATE - add new link
 app.get("/:username/new", function(req, res) {
   User.findOne({username: req.params.username}, function(err, foundUser) {
@@ -134,8 +138,10 @@ app.get("/:username/new", function(req, res) {
     })
   });
 
+
+
 // CREATE - add a new link to user profile...
-app.post("/:username", isLoggedIn, function(req, res) {
+app.post("/:username", middleware.isLoggedIn, function(req, res) {
   var newLink = {
     name: req.body.name,
     text: "http://" + req.body.text
@@ -206,12 +212,12 @@ app.delete("/:username/:link_id", middleware.checkLinkOwnership, function(req, r
     })
 })
 
-// CREATE ---> POST - Add link counter
 
-// app.post("/:username/:link_id", function(req, res){
-    
-// })
+// ========================================================================== //
+// Click Counter
+// ========================================================================== //
 
+// CREATE ---> POST - Add click counter
 app.post('/:username/:link_id', function(req, res){
   var newClick = new Click({
       clickTime: Date(),
@@ -248,12 +254,24 @@ app.post('/:username/:link_id', function(req, res){
     
 });
 
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
+
+// ========================================================================== //
+// Analytics
+// ========================================================================== //
+
+
+app.get("/:username/analytics", middleware.checkPageOwnership, function(req, res){
+    Link.find({"author.username": req.params.username}, function(err, foundLinks){
+    if(err){
+        console.log(err);
+        res.render("/");
+    } else {
+        console.log(req.params.username);
+        console.log(foundLinks);
+        res.render("analytics/", {links: foundLinks});
     }
-    res.redirect("/login");
-}
+})
+});
 
 
 app.listen(process.env.PORT, process.env.IP, function(){

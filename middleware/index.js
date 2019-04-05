@@ -38,4 +38,17 @@ middlewareObj.isLoggedIn = function(req, res, next){
     res.redirect("/login");
 }
 
+middlewareObj.checkPageOwnership = function(req, res, next){
+    console.log("middleware, logged in user:", req.user._id, req.user.username);
+    console.log("username in url:", req.params.username);
+    if(req.user.username === req.params.username){
+        return next();
+    } else {
+        req.flash("error", "You need to be logged in to do that");
+        res.redirect("back");
+    }
+    
+}
+
+
 module.exports = middlewareObj;
