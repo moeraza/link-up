@@ -3,26 +3,128 @@
     <div class="row justify-content-center pt-4">
         <h1><%= currentUser.username %>'s Analytics </h1>
     </div>
-    <div class="row">
+    
+    <div class="row justify-content-center">
+    <table class="table table-striped table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Link Name</th>
+          <th scope="col">Total Views</th>
+        </tr>
+      </thead>
+      <tbody>
+         <% links.forEach(function(link){ %>
+        <tr>
+          <th scope="row"><%= link.name %></th>
+          <td><%= link.clicks.length %></td>
+        </tr>
+        <% }); %>
+        
+      </tbody>
+    </table>
+    </div>
+    
+    <!--This is where the chart will go-->
+    <canvas id="myChart"></canvas>
+    
+    <script src="/js/lodish.js"></script>
+    
 
     
-    <table class="table table-striped table-dark">
-  <thead>
-    <tr>
-      <th scope="col">Link Name</th>
-      <th scope="col">Total Views</th>
-    </tr>
-  </thead>
-  <tbody>
-     <% links.forEach(function(link){ %>
-    <tr>
-      <th scope="row"><%= link.name %></th>
-      <td><%= link.clicks.length %></td>
-    </tr>
-    <% }); %>
-  </tbody>
-</table>
-    </div>
+    <script>
+    // We grab the links data from the server and put it in the front end script file
+    var links = <%-JSON.stringify(links)%>;
+    // collect all dates and put into one list
+    var allDates = [];
+    links.forEach(function(link){
+        console.log(link.name)
+        for(var i=0; i < link.clicks.length; i++){
+            allDates.push(link.clicks[i].clickTime);
+        }
+    });
+    var timeFormat = 'MM/DD/YYYY';
+    // Helper function to convert datetime format to YYYY-MM-DD
+    var date = function(d){
+    return moment(d).format(timeFormat);
+    }
+    
+    
+    
+    // map a group to the required form
+    var groupToSummary = function(group, date) {
+        return {
+            x: date,
+            y: group.length
+        }
+    }
+
+    // Data transformation
+    var resultTransformation = _(allDates)
+        .groupBy(date)
+        .map(groupToSummary)
+        .value();
+
+    
+
+    var configStandard = {
+        // The type of chart we want to create
+        type: 'line',
+    
+        // The data for our dataset
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [{
+                label: 'My First dataset',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [0, 10, 5, 2, 20, 30, 45]
+            }]
+        },
+    
+        // Configuration options go here
+        options: {}
+    }
+    
+    var configTime = {
+        type: 'line',
+          data: {
+            datasets: [{
+              label: "Click Data",
+              backgroundColor: "rgba(196, 93, 105, 0.3)",
+              showLine: true,
+              data: resultTransformation
+            }]
+          },
+          options: {
+            scales: {
+              xAxes: [{
+                type: 'time',
+                time: {
+                  unit: 'day',
+                parser: timeFormat,
+                tooltipFormat: 'll HH:mm'
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Date'
+                }
+              }],
+              yAxes: [{
+                  scaleLabel: {
+                      display: true,
+                      labelString: 'No. Of Clicks'
+                  }
+              }]
+            }
+          }
+    }
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, configTime);
+    
+    
+    </script>
+
+    
 </div>
 
 

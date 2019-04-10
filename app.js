@@ -261,7 +261,7 @@ app.post('/:username/:link_id', function(req, res){
 
 
 app.get("/:username/analytics", middleware.checkPageOwnership, function(req, res){
-    Link.find({"author.username": req.params.username}, function(err, foundLinks){
+    Link.find({"author.username": req.params.username}).populate("clicks").exec(function(err, foundLinks){
     if(err){
         console.log(err);
         res.render("/");
