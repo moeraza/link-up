@@ -36,14 +36,23 @@
     var linksData = <%- JSON.stringify(links) %>;
     
     // A hand picked nice color platlette to randomly choose from
-    var chartColors = {
+    var chartColorsBorder = {
         red: 'rgb(255, 99, 132)',
         orange: 'rgb(255, 159, 64)',
         yellow: 'rgb(255, 205, 86)',
         green: 'rgb(75, 192, 192)',
-    	blue: 'rgb(54, 162, 235)',
-    	purple: 'rgb(153, 102, 255)',
-    	grey: 'rgb(201, 203, 207)'
+      	blue: 'rgb(54, 162, 235)',
+      	purple: 'rgb(153, 102, 255)',
+      	grey: 'rgb(201, 203, 207)'
+    };
+    var chartColorsBackground = {
+        red: 'rgba(255, 99, 132, 0.5)',
+        orange: 'rgba(255, 159, 64, 0.5)',
+        yellow: 'rgba(255, 205, 86, 0.5)',
+        green: 'rgba(75, 192, 192, 0.5)',
+      	blue: 'rgba(54, 162, 235, 0.5)',
+      	purple: 'rgba(153, 102, 255, 0.5)',
+      	grey: 'rgba(201, 203, 207, 0.5)'
     };
     
     // A randomizer function to pick the colors
@@ -51,7 +60,12 @@
     var keys = Object.keys(obj)
     return obj[keys[ keys.length * Math.random() << 0]];
     };
-
+    
+    var randomNum = function(obj){
+      var max = Object.keys(obj).length
+      return Math.floor(Math.random() * Math.floor(max));
+    };
+    
     var timeFormat = "YYYY/MM/DD";
     // A helper function to extract date from datetime format
     var date = function(d){
@@ -83,9 +97,9 @@
         const container = {};
     
         container.label = item.name;
-        randomlyChosenColor = randomProperty(chartColors);
-        container.backgroundColor = randomlyChosenColor;
-        container.borderColor = randomlyChosenColor;
+        randomlyChosenNum = randomNum(chartColorsBorder);
+        container.backgroundColor = chartColorsBackground[Object.keys(chartColorsBackground)[randomlyChosenNum]];
+        container.borderColor = chartColorsBorder[Object.keys(chartColorsBorder)[randomlyChosenNum]];
         container.showLine = true,
         container.data = _(item.clicks).groupBy(date).map(groupToSummary).value();
         return container;
