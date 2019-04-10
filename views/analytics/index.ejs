@@ -33,38 +33,65 @@
     
     <script>
     // We grab the links data from the server and put it in the front end script file
-    var links = <%-JSON.stringify(links)%>;
-    // collect all dates and put into one list
-    var allDates = [];
-    links.forEach(function(link){
-        console.log(link.name)
-        for(var i=0; i < link.clicks.length; i++){
-            allDates.push(link.clicks[i].clickTime);
-        }
-    });
-    var timeFormat = 'MM/DD/YYYY';
-    // Helper function to convert datetime format to YYYY-MM-DD
+    var linksData = <%- JSON.stringify(links) %>;
+    
+    // A hand picked nice color platlette to randomly choose from
+    var chartColors = {
+        red: 'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green: 'rgb(75, 192, 192)',
+    	blue: 'rgb(54, 162, 235)',
+    	purple: 'rgb(153, 102, 255)',
+    	grey: 'rgb(201, 203, 207)'
+    };
+    
+    // A randomizer function to pick the colors
+    var randomProperty = function (obj) {
+    var keys = Object.keys(obj)
+    return obj[keys[ keys.length * Math.random() << 0]];
+    };
+
+    var timeFormat = "YYYY/MM/DD";
+    // A helper function to extract date from datetime format
     var date = function(d){
-    return moment(d).format(timeFormat);
+    return moment(d.clickTime).format(timeFormat);
     }
     
-    
-    
-    // map a group to the required form
+    // map a group to the required shape
     var groupToSummary = function(group, date) {
-        return {
-            x: date,
-            y: group.length
+    return {
+        x: date,
+        y: group.length
         }
     }
-
-    // Data transformation
-    var resultTransformation = _(allDates)
-        .groupBy(date)
-        .map(groupToSummary)
-        .value();
-
     
+    
+    const viewByLink = linksData.map(item => {
+    const totalViewsByLink = {};
+
+    totalViewsByLink.label = item.name;
+    totalViewsByLink.data = {
+
+      x: item.clicks.length
+    };
+
+    return totalViewsByLink;
+    })
+    
+    const chartDatasets = linksData.map(item => {
+        const container = {};
+    
+        container.label = item.name;
+        randomlyChosenColor = randomProperty(chartColors);
+        container.backgroundColor = randomlyChosenColor;
+        container.borderColor = randomlyChosenColor;
+        container.showLine = true,
+        container.data = _(item.clicks).groupBy(date).map(groupToSummary).value();
+        return container;
+    })
+    
+        
 
     var configStandard = {
         // The type of chart we want to create
@@ -88,12 +115,7 @@
     var configTime = {
         type: 'line',
           data: {
-            datasets: [{
-              label: "Click Data",
-              backgroundColor: "rgba(196, 93, 105, 0.3)",
-              showLine: true,
-              data: resultTransformation
-            }]
+            datasets: chartDatasets
           },
           options: {
             scales: {
