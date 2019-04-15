@@ -56,6 +56,9 @@ app.get("/", function(req, res){
 app.get("/register", function(req, res){
    res.render("register"); 
 });
+
+var defaultBackground = "background: #6190E8;  /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #A7BFE8, #6190E8);  /* Chrome 10-25, Safari 5.1-6 */  background: linear-gradient(to right, #A7BFE8, #6190E8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "
+                            
 //handling user sign up
 app.post("/register", function(req, res){
     var newUser = new User({
@@ -67,7 +70,8 @@ app.post("/register", function(req, res){
         email: req.body.email,
         linkone: req.body.linkone,
         linktwo: req.body.linktwo,
-        linkthree: req.body.linkthree
+        linkthree: req.body.linkthree,
+        themeColor: defaultBackground
     });
     User.register(newUser, req.body.password, function(err, user){
         if(err){
@@ -110,19 +114,59 @@ app.get("/logout", function(req, res){
 
 // SHOW - USER PROFILE w/ links
 app.get("/:username", function(req, res) {
+            
     Link.find({"author.username": req.params.username}, function(err, foundLinks){
         if(err){
-            console.log(err);
+            console.log("Ran into error finding links",err);
             res.render("/");
         } else {
-            console.log(req.params.username);
-            console.log(foundLinks);
-            res.render("profile/show", {links: foundLinks, username: req.params.username});
-        }
-    })
+            User.findOne({username: req.params.username}, function(err, foundUser) {
+                if(err){
+                    console.log("Error finding user", err)
+                } else {
+                    // var userReq = foundUser;
+                    console.log(req.params.username);
+                    console.log("Here are the links we found", foundLinks);
+                    res.render("profile/show", {links: foundLinks, username: req.params.username, thisUser: foundUser});
+                }
+            })
 
+
+        }
+    });
+        
+});
+// ========================================================================== //
+// Edit Theme
+// ========================================================================== //
+app.get("/:username/theme/choose", middleware.checkPageOwnership, function(req, res) {
+    res.render("theme/");
 });
 
+var colorTheme = {
+    "green": "background: #a8ff78; background: -webkit-linear-gradient(to right, #78ffd6, #a8ff78); background: linear-gradient(to right, #78ffd6, #a8ff78);",
+    "blue": "background: #373B44;  /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #4286f4, #373B44);  /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #4286f4, #373B44); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */",
+    "red": "background: #333333;  /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #dd1818, #333333);  /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #dd1818, #333333); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */"
+
+};
+
+app.post("/:username/theme", function(req, res) {
+    console.log("HERE is the color you chose:",req.body.radio);
+    var chosenColor = req.body.radio;
+    console.log("Here is the CSS styling:", colorTheme[chosenColor]);
+    User.findOne({username: req.user.username}, function(err, foundUser){
+        if(err){
+            console.log("ran into error", err)
+        } else {
+            console.log("Okay we found user", foundUser);
+            foundUser.themeColor = colorTheme[chosenColor];
+            foundUser.save();
+            res.redirect("/"+ req.params.username); 
+        }
+        
+    })
+    
+});
 // ========================================================================== //
 // LINKS - Creating, editing, deleting, updating. 
 // ========================================================================== //
@@ -213,6 +257,7 @@ app.delete("/:username/:link_id", middleware.checkLinkOwnership, function(req, r
 })
 
 
+
 // ========================================================================== //
 // Click Counter
 // ========================================================================== //
@@ -256,7 +301,7 @@ app.post('/:username/:link_id', function(req, res){
 
 
 // ========================================================================== //
-// Analytics
+// View Analytics
 // ========================================================================== //
 
 
@@ -273,7 +318,22 @@ app.get("/:username/analytics", middleware.checkPageOwnership, function(req, res
 })
 });
 
+// ========================================================================== //
+// Edit Profile
+// ========================================================================== //
+app.get("/:username/customize", middleware.checkPageOwnership, function(req, res) {
+    User.findOne({username: req.user.username}, function(err, foundUser) {
+        if(err){
+            console.log("error, could not find user", err)
+        } else {
+            console.log("found logged in user:", foundUser.username);
+            res.render("customize/", {currentUser: foundUser})
+        }
+        
+    })
+});
+
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("linkUp Server Started.....");
-})
+});

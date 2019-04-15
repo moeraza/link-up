@@ -35,4 +35,22 @@
 
 </div>
 
+  
+<script>
+  var defaultBackground = "background: #6190E8;  /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #A7BFE8, #6190E8);  /* Chrome 10-25, Safari 5.1-6 */  background: linear-gradient(to right, #A7BFE8, #6190E8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "
+  
+  function myFunction() {
+  // document.body.style.background = "#a8ff78";
+  try {
+    document.body.style = "<%=  thisUser.themeColor %>";
+  } catch(err) {
+    console.log("There is no color assigned to user will assign default color", err);
+    document.body.style = defaultBackground;
+  }
+  
+}
+
+myFunction();
+</script>
+
 <% include ../partials/footer %>

@@ -9,11 +9,15 @@ var UserSchema = new mongoose.Schema({
     password: String,
     avatar: String, 
     firstName: String, 
-    lastName: String, 
+    lastName: String,
+    displayName: String,
+    location: String,
+    bio: String,
     email: String,
     linkone: String,
     linktwo: String,
     linkthree: String,
+    themeColor: String,
     links: [
       {
          type: mongoose.Schema.Types.ObjectId,
