@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!--JQUERY CDN -->
+
 
 
         <title>LinkUp</title>
@@ -18,6 +18,12 @@
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
         <!--CHART.JS CDN-->
         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+        
+        <!-- CROPPIE DEPENDENCIES -->
+        <script src="/js/jquery.js"></script>
+        
+        <link rel="stylesheet" href="/stylesheets/croppie.css" />
+        <script src="/js/croppie.js"></script>
 
         
 
@@ -46,7 +52,7 @@
                             <a class="nav-link" href="/<%= currentUser.username %>"><%= currentUser.username %></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/<%= currentUser.username %>/customize">Customize</a>
+                            <a class="nav-link" href="/<%= currentUser.username %>/customize/custom">Customize</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/<%= currentUser.username %>/theme/choose">Theme</a>

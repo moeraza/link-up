@@ -12,13 +12,47 @@ var express                 = require("express"),
     // fetch                   = require("node-fetch");
 
 var middleware              = require("./middleware");
+
+// This is to store passwords
+require('dotenv').config();
+
+
+
+//  ============================================================= //
+// Requirments to configure cloudinary and mutler for image upload
+
+var multer = require('multer');
+var storage = multer.diskStorage({
+  filename: function(req, file, callback) {
+    callback(null, Date.now() + file.originalname); //When the file gets uploaded create custom name
+  }
+});
+var imageFilter = function (req, file, cb) {
+    // accept image files only
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+};
+var upload = multer({ storage: storage, fileFilter: imageFilter})
+
+var cloudinary = require('cloudinary');
+cloudinary.config({ 
+  cloud_name: 'datalchemy-ai', 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// ============================================================= //
     
 mongoose.connect("mongodb://localhost/linkup");
 var app = express();
 app.set('view engine', 'ejs');
 app.use(methodOverride("_method"));
 app.use(express.static(__dirname + "/public"));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: true, 
+                                limit:'50mb'
+}));
 app.use(flash());
 
 
@@ -118,16 +152,16 @@ app.get("/:username", function(req, res) {
     Link.find({"author.username": req.params.username}, function(err, foundLinks){
         if(err){
             console.log("Ran into error finding links",err);
-            res.render("/");
+            return res.render("/");
         } else {
             User.findOne({username: req.params.username}, function(err, foundUser) {
                 if(err){
-                    console.log("Error finding user", err)
+                    return console.log("Error finding user", err)
                 } else {
                     // var userReq = foundUser;
                     console.log(req.params.username);
                     console.log("Here are the links we found", foundLinks);
-                    res.render("profile/show", {links: foundLinks, username: req.params.username, thisUser: foundUser});
+                    return res.render("profile/show", {links: foundLinks, username: req.params.username, thisUser: foundUser});
                 }
             })
 
@@ -167,6 +201,80 @@ app.post("/:username/theme", function(req, res) {
     })
     
 });
+// ========================================================================== //
+// Edit Profile
+// ========================================================================== //
+
+// EDIT - edit user profile details
+app.get("/:username/customize/custom", middleware.checkPageOwnership, function(req, res) {
+    User.findOne({username: req.user.username}, function(err, foundUser) {
+        if(err){
+            console.log("error, could not find user", err);
+        } else {
+            console.log("found logged in user:", foundUser.username);
+            res.render("customize/", {currentUser: foundUser});
+        }
+        
+    });
+});
+
+
+// UPDATE - put route to update user profile data
+app.put("/:username/customize", middleware.checkPageOwnership, function(req, res){
+    var profileData = {
+                        displayName: req.body.displayName, 
+                        location: req.body.location, 
+                        bio: req.body.bioTextBox
+    };
+    // res.send(profileData);
+    User.findByIdAndUpdate(req.user._id, profileData, function(err,  updateProfile){
+       if(err){
+           console.log("Error updating profile: ", err);
+       } else {
+           res.render("/"+req.params.username);
+       }
+    });
+});
+
+// UPDATE - upload new user avatar
+app.post("/:username/picupload", middleware.isLoggedIn, upload.single('image'), function(req, res){
+    cloudinary.uploader.upload(req.file.path, function(result) {
+      // add cloudinary url for the image to the campground object under image property
+       var newImage = {avatar: result.secure_url};
+       User.findByIdAndUpdate(req.user._id, newImage, function(err, updatedImage) {
+           if (err) {
+               req.flash('error', err.message);
+               return res.redirect('back');
+           }
+           res.redirect("/" + req.params.username + "/picupload/edit");
+       });
+        
+    });
+});
+
+app.get("/:username/picupload/edit", function(req, res) {
+   res.render("customize/editpic", {thisUser: req.user}) 
+});
+
+app.post("/:username/picupload/edit/post", function(req, res) {
+    cloudinary.v2.uploader.upload(req.body.imgInputField, function(error, result) {
+        console.log(result, error); 
+        var newImage = {avatar: result.secure_url};
+        User.findByIdAndUpdate(req.user._id, newImage, function(err, updatedImage) {
+           if (err) {
+               req.flash('error', err.message);
+               return res.redirect('back');
+           }
+           res.redirect("/" + req.params.username);
+       });
+        
+    });
+
+
+    console.log("Here is data we got back", req.body.imgInputField);
+});
+
+
 // ========================================================================== //
 // LINKS - Creating, editing, deleting, updating. 
 // ========================================================================== //
@@ -316,21 +424,6 @@ app.get("/:username/analytics", middleware.checkPageOwnership, function(req, res
         res.render("analytics/", {links: foundLinks});
     }
 })
-});
-
-// ========================================================================== //
-// Edit Profile
-// ========================================================================== //
-app.get("/:username/customize", middleware.checkPageOwnership, function(req, res) {
-    User.findOne({username: req.user.username}, function(err, foundUser) {
-        if(err){
-            console.log("error, could not find user", err)
-        } else {
-            console.log("found logged in user:", foundUser.username);
-            res.render("customize/", {currentUser: foundUser})
-        }
-        
-    })
 });
 
 

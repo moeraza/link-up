@@ -1,9 +1,9 @@
 console.log('Client-side code running');
 
-var buttons = document.getElementsByClassName("myButton");
+// var buttons = document.getElementsByClassName("myButton");
 
-var username = window.location.pathname;
-console.log("did this work:",username)
+// var username = window.location.pathname;
+// console.log("did this work:",username)
 // Listen to when a user clicks any button, then fetch a
 // post request to the servercd
 

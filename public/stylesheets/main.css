@@ -29,7 +29,7 @@
 }
 
 
-/*-----------------STYLING FOR RADIO BUTTONS-----------------*/
+/*====================== STYLING FOR RADIO BUTTONS ====================== */
 
 /* The radioContainer */
 .radioContainer {
@@ -115,3 +115,19 @@
 	border-radius: 50%;
 	background: white;
 }
+/*----------------- END OF STYLING FOR RADIO BUTTONS-----------------*/
+
+
+/*====================== CROPPIE STYLING ==========================*/
+
+#page {
+  background: #FFF;
+  padding: 20px;
+  margin: 20px;
+}
+
+#demo {
+  width: 200px;
+  height: 300px;
+}
+
