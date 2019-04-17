@@ -2,11 +2,24 @@
 
 <div class="container">
   <div class="row justify-content-center align-items-center">
-    <div class="col-12 col-md-4">
-      <h1 class="text-center">
-        <%= username %>'s Links
+    <div class="col-12 col-md-4 pt-4">
+      <h1 class="text-center pb-2">
+        <% if(!thisUser.displayName){ %>
+            <%= username %>'s Links
+          <% } else { %>
+          <%= thisUser.displayName %>
+          <% } %>
       </h1>
-      <img src="<%= thisUser.avatar%>">
+      <img src="<%= thisUser.avatar%>" class="profilePic">
+    </div>
+  </div>
+  <div class="row justify-content-center align-items-center profileInfoRow">
+    <div class="col-12 col-md-4 profileInfoBox">
+      <div class="location">
+        <span class="icon"><i class="fas fa-map-pin"></i></span>
+        <%=thisUser.location%>
+      </div>
+      <p><%= thisUser.bio%></p>
     </div>
   </div>
   <div class="row justify-content-center align-items-center">
@@ -28,7 +41,7 @@
       <% }); %>
       
       <% if (currentUser && currentUser._id.equals(currentUser._id)){ %>
-      <a class="btn btn-success" id="addlinkbutton" href="/<%= currentUser.username %>/new">Add New Link</a>
+      <a class="" id="addlinkbutton" href="/<%= currentUser.username %>/new"><i class="fas fa-plus-circle"></i></a>
        <% } %>
 
     </div>

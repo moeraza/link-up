@@ -4,6 +4,8 @@
     margin: 10px;
 }
 
+/*====================== STYLING FOR PROFILE SHOW PAGE ====================== */
+
 #delete-form {
     display: inline;
     float: right;
@@ -15,18 +17,76 @@
 }
 
 #addlinkbutton {
-    display: block;
-    margin-top: 10px;
+    display: flex;
+    font-size: 3rem;
+    justify-content: center;
+    align-self: center;
+}
+
+#addlinkbutton i {
+  color: green;
+  display: flex;
 }
 
 #links-form {
     display: grid;
     margin: 10px;
 }
-
-.completed {
-  color: green;
+.profilePic {
+  border-radius: 50%;
+  width:150px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
+
+.location {
+  align-items: center;
+  border: 2px solid white;
+  border-radius: 1.5625rem;
+  color: white;
+  display: flex;
+  font-size: 0.875rem;
+  margin: 0.8125rem 0rem;
+  padding: 0.5rem 0.9375rem 0.5rem 0.625rem;
+  width: max-content;
+  
+}
+
+.location .icon {
+    margin-right: 0.3125rem;
+}
+.profileInfoRow {
+  margin: auto;
+}
+.profileInfoBox {
+  padding-top: 10px;
+  display: contents;
+  margin: 50px 5px;
+}
+
+.icon {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.bio {
+    /*color: #7882aa;*/
+    margin: 10px 0 0 0;
+    white-space: pre-wrap;
+}
+
+p {
+    color: white;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+
+
+/*----------------- END OF STYLING FOR PROFILE SHOW PAGE-----------------*/
+
 
 
 /*====================== STYLING FOR RADIO BUTTONS ====================== */

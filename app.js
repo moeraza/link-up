@@ -231,7 +231,7 @@ app.put("/:username/customize", middleware.checkPageOwnership, function(req, res
        if(err){
            console.log("Error updating profile: ", err);
        } else {
-           res.render("/"+req.params.username);
+           res.redirect("/"+req.params.username);
        }
     });
 });
