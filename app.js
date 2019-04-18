@@ -91,7 +91,7 @@ app.get("/register", function(req, res){
    res.render("register"); 
 });
 
-var defaultBackground = "background: #6190E8;  /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #A7BFE8, #6190E8);  /* Chrome 10-25, Safari 5.1-6 */  background: linear-gradient(to right, #A7BFE8, #6190E8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "
+var defaultBackground = "background: #6190E8;  /* fallback for old browsers */ background: -webkit-linear-gradient(180deg, #A7BFE8, #6190E8);  /* Chrome 10-25, Safari 5.1-6 */  background: linear-gradient(180deg, #A7BFE8, #6190E8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "
                             
 //handling user sign up
 app.post("/register", function(req, res){
@@ -178,9 +178,9 @@ app.get("/:username/theme/choose", middleware.checkPageOwnership, function(req, 
 });
 
 var colorTheme = {
-    "green": "background: #a8ff78; background: -webkit-linear-gradient(to right, #78ffd6, #a8ff78); background: linear-gradient(to right, #78ffd6, #a8ff78);",
-    "blue": "background: #373B44;  /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #4286f4, #373B44);  /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #4286f4, #373B44); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */",
-    "red": "background: #333333;  /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #dd1818, #333333);  /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #dd1818, #333333); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */"
+    "green": "background: #a8ff78; background: -webkit-linear-gradient(180deg, #78ffd6, #a8ff78); background: linear-gradient(180deg, #78ffd6, #a8ff78);",
+    "blue": "background: #56CCF2;  /* fallback for old browsers */ background: -webkit-linear-gradient(180deg, #2F80ED, #56CCF2);  /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(180deg, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */",
+    "red": "background: #333333;  /* fallback for old browsers */ background: -webkit-linear-gradient(180deg, #dd1818, #333333);  /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(180deg, #dd1818, #333333); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */"
 
 };
 
@@ -211,8 +211,15 @@ app.get("/:username/customize/custom", middleware.checkPageOwnership, function(r
         if(err){
             console.log("error, could not find user", err);
         } else {
-            console.log("found logged in user:", foundUser.username);
-            res.render("customize/", {currentUser: foundUser});
+            Link.find({"author.username": req.params.username}, function(err, foundLinks){
+                if(err){
+                    conosle.log("Error", err)
+                }  else {
+                    console.log("found logged in user:", foundUser.username);
+                    res.render("customize/", {currentUser: foundUser, links: foundLinks});
+                }
+            })
+
         }
         
     });

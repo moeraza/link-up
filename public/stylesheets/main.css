@@ -6,9 +6,84 @@
 
 /*====================== STYLING FOR PROFILE SHOW PAGE ====================== */
 
-#delete-form {
-    display: inline;
-    float: right;
+.deleteFormButton{
+  display: inline;
+  float: left;
+}
+
+.deleteButton{
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  font-size: 14px;
+  height: 2.5rem;
+  line-height: 0.8em;
+  padding: 0 0.8rem;
+  background: none;
+  border: 2px solid #ff6b6b;
+  border-radius: 2.5rem;
+  box-sizing: border-box;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 1.875rem;
+  text-align: center;
+  transition: 0.2s;
+  user-select: none;
+  white-space: nowrap;
+  width: -webkit-fit-content;
+  margin: 0.625rem;
+  width: min-content;
+  color: #ff6b6b;
+}
+.deleteButton:hover{
+  border-color: #ee5253;
+  background: #ee5253;
+  color: white;
+}
+
+.saveButton {
+  float: right;
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  font-size: 14px;
+  height: 2.5rem;
+  line-height: 0.8em;
+  padding: 0 1.66667rem;
+  background: #54a0ff;
+  border: 0;
+  border-radius: 2.5rem;
+  box-sizing: border-box;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 1.875rem;
+  text-align: center;
+  transition: 0.2s;
+  user-select: none;
+  white-space: nowrap;
+  width: -webkit-fit-content;
+  margin: 0.625rem;
+  width: min-content;
+
+}
+.saveButton:hover{
+border-color: #2e86de;
+}
+.editButton {
+  float:right;
+}
+
+@media all and (max-width:30em){
+.saveButton{
+display:block;
+margin:0.2em auto;
+}
+.deleteButton{
+display:block;
+margin:0.2em auto;
+}
 }
 
 #edit-button {
@@ -34,10 +109,14 @@
 }
 .profilePic {
   border-radius: 50%;
+  border: 2px solid white;
   width:150px;
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+.porfileName {
+  color: white;
 }
 
 .location {
@@ -108,20 +187,20 @@ p {
 
 .greenBox {
   background: #a8ff78; 
-  background: -webkit-linear-gradient(to right, #78ffd6, #a8ff78); 
-  background: linear-gradient(to right, #78ffd6, #a8ff78);
+  background: -webkit-linear-gradient(180deg, #78ffd6, #a8ff78); 
+  background: linear-gradient(180deg, #78ffd6, #a8ff78);
 }
 
 .blueBox {
-  background: #373B44;  /* fallback for old browsers */ 
-  background: -webkit-linear-gradient(to right, #4286f4, #373B44);  /* Chrome 10-25, Safari 5.1-6 */ 
-  background: linear-gradient(to right, #4286f4, #373B44); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #56CCF2;  /* fallback for old browsers */ 
+  background: -webkit-linear-gradient(180deg, #2F80ED, #56CCF2);  /* Chrome 10-25, Safari 5.1-6 */ 
+  background: linear-gradient(180deg, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .redBox {
   background: #333333;  /* fallback for old browsers */ 
-  background: -webkit-linear-gradient(to right, #dd1818, #333333);  /* Chrome 10-25, Safari 5.1-6 */ 
-  background: linear-gradient(to right, #dd1818, #333333); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: -webkit-linear-gradient(180deg, #dd1818, #333333);  /* Chrome 10-25, Safari 5.1-6 */ 
+  background: linear-gradient(180deg, #dd1818, #333333); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 /* Hide the browser's default radio button */
@@ -176,6 +255,19 @@ p {
 	background: white;
 }
 /*----------------- END OF STYLING FOR RADIO BUTTONS-----------------*/
+
+/*======================  EDIT PROFILE PAGE ==========================*/
+
+.linkButtons{
+  display:block;
+  margin: 10px 0px;
+  width: -webkit-fill-available;
+}
+.formOne {
+  display: contents
+  
+}
+/*----------------- END OF STYLING FOR EDIT PROFILE PAGE -----------------*/
 
 
 /*====================== CROPPIE STYLING ==========================*/

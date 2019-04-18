@@ -38,7 +38,65 @@
             
         </div>
     </div>
+    
+    <!--EDIT ALL THE LINKS-->
+    <h1>Edit Links</h1>
+      <div class="row justify-content-center align-items-center">
+    <div class="col-12 col-md-4">
+              <% if (currentUser && currentUser._id.equals(currentUser._id)){ %>
+      <a class="" id="addlinkbutton" href="/<%= currentUser.username %>/new"><i class="fas fa-plus-circle"></i></a>
+       <% } %>
+
+      <% links.forEach(function(link){ %>
+      
+      
+        <button type="submit" class="btn btn-primary linkButtons"><%= link.name %><i class="fas fa-pencil-alt editButton"></i></button>
+    <!--FORM TO MAKE EDITS FOR BUTTON -->
+    <form action="/<%= currentUser.username %>/<%= link._id%>?_method=PUT" method="POST" class="formOne">
+        <div class="form-group">
+          <input type="text" class="form-control" name="name" value="<%= link.name %>">
+        </div>
+        
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon3">http://</span>
+            </div>
+            <input type="text" class="form-control" aria-describedby="basic-addon3" name="text" value="<%= link.text %>">
+          </div>
+        </div>
+        
+        <button type="submit" class="btn btn-lg btn-primary saveButton">Save</button>
+      </form>
+       <!--========== END FORM TO MAKE EDITS FOR BUTTON -->
+      
+          
+          
+          <form id="delete-form" class="deleteFormButton" action="/<%= currentUser.username%>/<%= link._id %>?_method=DELETE" method="POST">
+            <button class="btn btn-sm btn-danger deleteButton"><i class="far fa-trash-alt"></i><span class="pl-1">Delete</span></button>
+          </form>
+            
+      <% }); %>
+      
+
+    </div>
+  </div>
+
 </div>
+
+<script>
+
+$('.formOne').toggle();
+$('.deleteFormButton').toggle();
+
+$('.linkButtons').click(function() {
+    
+    $(this).next().slideToggle(300);
+    $(this).next().next().slideToggle(300);
+});
+
+</script>
+
 
 
 <% include ../partials/footer %>
