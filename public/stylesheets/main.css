@@ -1,7 +1,29 @@
+html{
+  min-height: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background: #70bg32;
+  background-repeat:no-repeat;
+}
+
+.mainBtn{
+  border-radius: 0.8rem;
+  background: rgba(223, 230, 233,0.5);
+  color: #2d3436;
+  border: 1px solid white;
+}
+.mainBtn:hover{
+  background: rgba(245, 246, 250, 0.9);
+  color:#2d3436;
+  border: 1px solid white;
+}
 .showbtn {
-    display: block;
-    padding: 10px;
-    margin: 10px;
+  display: block;
+  padding: 10px;
+  margin: 10px;
+  
 }
 
 /*====================== STYLING FOR PROFILE SHOW PAGE ====================== */
@@ -91,16 +113,38 @@ margin:0.2em auto;
     
 }
 
-#addlinkbutton {
-    display: flex;
-    font-size: 3rem;
-    justify-content: center;
-    align-self: center;
+#addButton {
+  position: fixed;
+  bottom: -4px;
+  right: 10px;
+  margin-bottom: 20px;
+  margin-right: 20px;
 }
 
-#addlinkbutton i {
-  color: green;
+#addlinkbutton {
   display: flex;
+  font-size: 3rem;
+  justify-content: center;
+  align-self: center;
+
+}
+#addlinkbutton:hover {
+  text-decoration: none;
+  box-shadow: 0px 0px 10px #2e86de;
+  border-radius: 50%;
+  
+}
+
+.linkButtons:active {
+  outline: none;
+  border:none;
+}
+#addlinkbutton i {
+  color:white;
+  display: flex;
+  background-color:  #2e86de;
+  border-radius: 50%;
+  box-shadow: 0px 0px 5px grey;
 }
 
 #links-form {
@@ -126,7 +170,7 @@ margin:0.2em auto;
   color: white;
   display: flex;
   font-size: 0.875rem;
-  margin: 0.8125rem 0rem;
+  margin: 1.2rem 0rem;
   padding: 0.5rem 0.9375rem 0.5rem 0.625rem;
   width: max-content;
   
@@ -139,27 +183,28 @@ margin:0.2em auto;
   margin: auto;
 }
 .profileInfoBox {
-  padding-top: 10px;
-  display: contents;
-  margin: 50px 5px;
+  display: block;
+  text-align: -webkit-center;
 }
 
 .icon {
-    align-items: center;
-    display: flex;
-    justify-content: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
 
 .bio {
-    /*color: #7882aa;*/
-    margin: 10px 0 0 0;
-    white-space: pre-wrap;
+  /*color: #7882aa;*/
+  margin: 10px 0;
+  white-space: pre-wrap;
+  text-align: center;
+  display: block;
 }
 
 p {
-    color: white;
-    font-size: 0.875rem;
-    line-height: 1.6;
+  color: white;
+  font-size: 0.875rem;
+  line-height: 1.6;
 }
 
 
@@ -186,9 +231,9 @@ p {
 }
 
 .greenBox {
-  background: #a8ff78; 
-  background: -webkit-linear-gradient(180deg, #78ffd6, #a8ff78); 
-  background: linear-gradient(180deg, #78ffd6, #a8ff78);
+  background: #DCE35B;  /* fallback for old browsers */ 
+  background: -webkit-linear-gradient(180deg, #45B649, #DCE35B);  /* Chrome 10-25, Safari 5.1-6 */ 
+  background: linear-gradient(180deg, #45B649, #DCE35B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .blueBox {
@@ -198,9 +243,17 @@ p {
 }
 
 .redBox {
-  background: #333333;  /* fallback for old browsers */ 
-  background: -webkit-linear-gradient(180deg, #dd1818, #333333);  /* Chrome 10-25, Safari 5.1-6 */ 
-  background: linear-gradient(180deg, #dd1818, #333333); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #cb2d3e;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(0deg, #ef473a, #cb2d3e);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(0deg, #ef473a, #cb2d3e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.pinkBox {
+  background: #ee9ca7;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(180deg, #ffdde1, #ee9ca7);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(180deg, #ffdde1, #ee9ca7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 /* Hide the browser's default radio button */
@@ -257,11 +310,54 @@ p {
 /*----------------- END OF STYLING FOR RADIO BUTTONS-----------------*/
 
 /*======================  EDIT PROFILE PAGE ==========================*/
+/*START TRYING TO MAKE UPLOAD WORK*/
+.figureFace:hover{
+  border: 2px dashed grey;
+  border-radius: 50%;
+}
 
+.gambar {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+}
+label.cabinet{
+	display: block;
+	cursor: pointer;
+}
+
+label.cabinet input.file{
+	position: relative;
+	height: 100%;
+	width: auto;
+	opacity: 0;
+	-moz-opacity: 0;
+  filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+  margin-top:-30px;
+}
+
+#upload-demo{
+	width: 250px;
+	height: 250px;
+  padding-bottom:25px;
+}
+figure figcaption {
+    position: absolute;
+    bottom: 0;
+    color: #fff;
+    width: 100%;
+    padding-left: 9px;
+    padding-bottom: 5px;
+    text-shadow: 0 0 10px #000;
+}
+/* END OF TRYING TO MAKE UPLOAD WORK*/
 .linkButtons{
   display:block;
   margin: 10px 0px;
   width: -webkit-fill-available;
+}
+.linkButtons:hover {
+  
 }
 .formOne {
   display: contents

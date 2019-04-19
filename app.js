@@ -113,7 +113,13 @@ app.post("/register", function(req, res){
             req.flash("error", err.message);
             return res.render('register');
         }
-        passport.authenticate("local")(req, res, function(){
+        passport.authenticate("local", {
+            failureRedirect: "/login",
+            failureFlash: true
+        })(req, res, function(err, user){
+        if(err){
+            req.flash(err);
+        } 
             req.flash("success", "Welcome to LinkUp " + user.username);
             res.redirect("/" + user.username);
         });
@@ -129,9 +135,11 @@ app.get("/login", function(req, res){
 //login logic
 //middleware
 app.post("/login", passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login"
+    // successRedirect: "/",
+    failureRedirect: "/login",
+    failureFlash: true
 }) ,function(req, res){
+    res.redirect("/" + req.user.username)
     
 });
 
@@ -178,9 +186,10 @@ app.get("/:username/theme/choose", middleware.checkPageOwnership, function(req, 
 });
 
 var colorTheme = {
-    "green": "background: #a8ff78; background: -webkit-linear-gradient(180deg, #78ffd6, #a8ff78); background: linear-gradient(180deg, #78ffd6, #a8ff78);",
+    "green": "background: #DCE35B;  /* fallback for old browsers */ background: -webkit-linear-gradient(180deg, #45B649, #DCE35B);  /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(180deg, #45B649, #DCE35B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */",
     "blue": "background: #56CCF2;  /* fallback for old browsers */ background: -webkit-linear-gradient(180deg, #2F80ED, #56CCF2);  /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(180deg, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */",
-    "red": "background: #333333;  /* fallback for old browsers */ background: -webkit-linear-gradient(180deg, #dd1818, #333333);  /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(180deg, #dd1818, #333333); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */"
+    "red": "background: #cb2d3e;  /* fallback for old browsers */ background: -webkit-linear-gradient(0deg, #ef473a, #cb2d3e);  /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(0deg, #ef473a, #cb2d3e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */",
+    "pink": "background: #ee9ca7;  /* fallback for old browsers */ background: -webkit-linear-gradient(0deg, #ffdde1, #ee9ca7);  /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(0deg, #ffdde1, #ee9ca7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */"
 
 };
 
@@ -227,20 +236,23 @@ app.get("/:username/customize/custom", middleware.checkPageOwnership, function(r
 
 
 // UPDATE - put route to update user profile data
-app.put("/:username/customize", middleware.checkPageOwnership, function(req, res){
+app.put("/:username/customize", middleware.checkPageOwnership, upload.single('image'), function(req, res){
+
+    // res.send(profileData);
     var profileData = {
                         displayName: req.body.displayName, 
                         location: req.body.location, 
                         bio: req.body.bioTextBox
     };
-    // res.send(profileData);
     User.findByIdAndUpdate(req.user._id, profileData, function(err,  updateProfile){
        if(err){
            console.log("Error updating profile: ", err);
        } else {
            res.redirect("/"+req.params.username);
        }
-    });
+    });  
+
+
 });
 
 // UPDATE - upload new user avatar

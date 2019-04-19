@@ -1,9 +1,42 @@
 <% include ../partials/header %>
 
-<div class="container">
+<div class="container pt-2">
+      <div class="row" style="text-align: center;">
+      <div class="col-12"style="">
+        <label class="cabinet center-block">
+        <figure class="figure figureFace">
+          <img src="" class=" img-fluid gambar" alt="User image goes here" id="item-img-output">
+          <!--<figcaption class="figure-caption text-right"><i class="fa fa-camera"></i></figcaption>-->
+        </figure>
+          <input type="file" class="item-img file center-block" name="file_photo" />
+        </label>
+      </div>
+    </div>
+    
+    <!--MODAL STARTS-->
+<div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Photo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div id="upload-demo" class="center-block"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" id="cropImageBtn" class="btn btn-primary">Crop</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <!--MODAL ENDS-->
+    
     <div class="row justify-content-center">
         <div class= "col-12 col-md-6">
-            <h1> Customize Page</h1>
             <!--EDIT USER DETAILS FORM-->
             <form action="/<%=currentUser.username%>/customize?_method=PUT" method="POST">
               <div class="form-group">
@@ -13,7 +46,7 @@
             <div class="form-group">
                 <label for="exampleFormControlInput1">Location</label>
                 <input type="text" class="form-control" id="exampleFormControlInput1" name="location" value="<%= currentUser.location %>" placeholder="Toronto">
-              </div>
+             </div>
         
               <div class="form-group">
                 <label for="exampleFormControlTextarea1">Bio</label>
@@ -22,30 +55,26 @@
                 <button type="submit" class="btn btn-primary">Done</button>
             </form>
             
-            <!--UPLPOAD PICTURE FORM-->
-            <h1>Upload Picture</h1>
-            <form action="/<%=currentUser.username%>/picupload" method="POST" enctype="multipart/form-data">
-
-                <div class="form-group">
-                    <label for="image">Image</label>
-                    <input type="file" id="image" name="image" accept="image/*" required>
-                </div>
-
-                <div class="form-group">
-                    <button class="btn btn-lg btn-primary btn-block">Submit!</button>
-                </div>
-            </form>
             
         </div>
     </div>
     
+    <form action="/<%=currentUser.username%>/picupload/edit/post" id="pictureForm" method="POST">
+        <div class="form-group">
+          <input type="text" id="imgInputField" class="form-control" name="imgInputField">
+          <button>Submit</button>
+      </div>
+    </form>
+    
     <!--EDIT ALL THE LINKS-->
-    <h1>Edit Links</h1>
-      <div class="row justify-content-center align-items-center">
+      <div class="row justify-content-center align-items-center pt-5">
     <div class="col-12 col-md-4">
-              <% if (currentUser && currentUser._id.equals(currentUser._id)){ %>
-      <a class="" id="addlinkbutton" href="/<%= currentUser.username %>/new"><i class="fas fa-plus-circle"></i></a>
-       <% } %>
+        <div id="addButton">
+            <% if (currentUser && currentUser._id.equals(currentUser._id)){ %>
+                <a class="" id="addlinkbutton" href="/<%= currentUser.username %>/new"><i class="fas fa-plus-circle"></i></a>
+            <% } %>
+        </div>
+
 
       <% links.forEach(function(link){ %>
       
@@ -86,14 +115,85 @@
 
 <script>
 
-$('.formOne').toggle();
-$('.deleteFormButton').toggle();
+$('.formOne').hide();
+$('.deleteFormButton').hide();
+$('#pictureForm').hide();
+
 
 $('.linkButtons').click(function() {
+    
+    $(this).children('i').toggleClass("fas fa-pencil-alt","fa-minus" , 1000, "easeInOutQuad");
+    $(this).children('i').toggleClass("far fa-times-circle" , 1000, "easeInOutQuad")
     
     $(this).next().slideToggle(300);
     $(this).next().next().slideToggle(300);
 });
+
+
+
+// CODE TO DEAL WITH IMAGE UPLOAD// Start upload preview image
+$(".gambar").attr("src", "http://chittagongit.com//images/user-icon-flat/user-icon-flat-6.jpg");
+var $uploadCrop,
+  tempFilename,
+  rawImg,
+  imageId;
+
+function readFile(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      $('.upload-demo').addClass('ready');
+      $('#cropImagePop').modal('show');
+      rawImg = e.target.result;
+    }
+    reader.readAsDataURL(input.files[0]);
+  } else {
+    swal("Sorry - you're browser doesn't support the FileReader API");
+  }
+}
+
+$uploadCrop = $('#upload-demo').croppie({
+  viewport: {
+    width: 200,
+    height: 200,
+    type: 'circle'
+  },
+  enforceBoundary: false,
+  enableExif: true
+});
+$('#cropImagePop').on('shown.bs.modal', function() {
+  // alert('Shown pop');
+  $uploadCrop.croppie('bind', {
+    url: rawImg,
+    points: [77,469,280,739]
+  }).then(function() {
+    console.log('jQuery bind complete');
+  });
+});
+
+$('.item-img').on('change', function() {
+  imageId = $(this).data('id');
+  tempFilename = $(this).val();
+  $('#cancelCropBtn').data('id', imageId);
+  readFile(this);
+});
+$('#cropImageBtn').on('click', function(ev) {
+  $uploadCrop.croppie('result', {
+    type: 'base64',
+    format: 'jpeg',
+    size: {
+      width: 200,
+      height: 200
+    }
+  }).then(function(resp) {
+    $('#item-img-output').attr('src', resp);
+    $('#imgInputField').val($('#imgInputField').val() + resp);
+    $('#cropImagePop').modal('hide');
+    $('#pictureForm').submit();
+  });
+});
+// End upload preview image
+
 
 </script>
 
