@@ -26,9 +26,188 @@ html{
   
 }
 
+/*====================== HOME PAGE ====================== */
+#iphoneDisp {
+  height: 500px;
+  display: -webkit-inline-box;
+  margin-left: 30%;
+}
+
+@media only screen and (max-width: 813px) {
+  #iphoneDisp {
+    height: 500px;
+    display: -webkit-inline-box;
+    margin: 10%;
+  }
+}
+
+.iphoneWork {
+  height: 500px;
+  display: -webkit-inline-box;
+  margin: 10%;
+  text-align:center;
+}
+
+.landingContent h1 {
+  padding-top:13%;
+  font-weight: 800;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 700;
+}
+.landingContent p {
+  color: black;
+  font-size: 1.1rem;
+}
+
+.landingContent {
+  text-align: left;
+  margin: 8% 0%;
+  
+}
+
+.actionCallButton {
+  float: left;
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  font-size: 14px;
+  height: 2.5rem;
+  line-height: 0.8em;
+  padding: 0 1.66667rem;
+  background: #0984e3;
+  border: 0;
+  border-radius: 2.5rem;
+  box-sizing: border-box;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 1.875rem;
+  text-align: center;
+  transition: 0.2s;
+  user-select: none;
+  white-space: nowrap;
+  width: -webkit-fit-content;
+  margin: 0.625rem 0;
+  width: min-content;
+  letter-spacing: .1rem;
+}
+
+.saveButton:hover {
+  border-color: #2e86de;
+}
+.workDescription {
+  font-size: 1.57rem;
+  margin: 1% 15%;
+}
+
+#howItWorksSection {
+  margin-top: 10%;
+}
+
+#howItWorksSection .numbers {
+    align-items: center;
+    background: #0984e3;
+    border-radius: 50%;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    display: flex;
+    font-size: 1.125rem;
+    height: 2.5rem;
+    justify-content: center;
+    line-height: 0.8em;
+    margin: 0 0 1.25rem 10rem;
+    width: 2.5rem;
+}
+
+.phoneCols {
+  text-align:center;
+}
+
+#features {
+  margin-top: 10%;
+}
+
+#pricing {
+  margin-top: 8rem;
+}
+
+
+Edit in JSFiddle
+Result
+HTML
+CSS
+JavaScript
+Resources
+section.pricing {
+  background: #007bff;
+  background: linear-gradient(to right, #0062E6, #33AEFF);
+}
+
+.pricing .card {
+  border: none;
+  border-radius: 1rem;
+  transition: all 0.2s;
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.pricing hr {
+  margin: 1.5rem 0;
+}
+
+.pricing .card-title {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  letter-spacing: .1rem;
+  font-weight: bold;
+}
+
+.pricing .card-price {
+  font-size: 3rem;
+  margin: 0;
+}
+
+.pricing .card-price .period {
+  font-size: 0.8rem;
+}
+
+.pricing ul li {
+  margin-bottom: 1rem;
+}
+
+.pricing .text-muted {
+  opacity: 0.7;
+}
+
+.pricing .btn {
+  font-size: 80%;
+  border-radius: 5rem;
+  letter-spacing: .1rem;
+  font-weight: bold;
+  padding: 1rem;
+  opacity: 0.7;
+  transition: all 0.2s;
+}
+
+/* Hover Effects on Card */
+
+@media (min-width: 992px) {
+  .pricing .card:hover {
+    margin-top: -.25rem;
+    margin-bottom: .25rem;
+    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
+  }
+  .pricing .card:hover .btn {
+    opacity: 1;
+  }
+}
+/*----------------- END OF STYLING FOR HOME PAGE-----------------*/
+
 /*====================== STYLING FOR PROFILE SHOW PAGE ====================== */
 
-.deleteFormButton{
+.deleteFormButton {
   display: inline;
   float: left;
 }
@@ -201,7 +380,7 @@ margin:0.2em auto;
   display: block;
 }
 
-p {
+.profileInfoRow p {
   color: white;
   font-size: 0.875rem;
   line-height: 1.6;
@@ -379,3 +558,58 @@ figure figcaption {
   height: 300px;
 }
 
+
+
+
+/*====================== FOOTRER STYLING ==========================*/
+
+footer {
+  color: grey;
+  font-size: 0.75rem;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;            /* Footer height */
+
+}
+
+.datalchemyLogo {
+  height: 20px;
+  display: -webkit-inline-box;
+  margin-left: 5px;
+  
+}
+
+
+
+
+
+/* PAYMENT STYLING */
+
+.StripeElement {
+  box-sizing: border-box;
+
+  height: 40px;
+  width: -webkit-fill-available;
+  padding: 10px 12px;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: white;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}

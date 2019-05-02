@@ -1,15 +1,145 @@
 <% include partials/header %>
 <div class="container">
-    <div class="row justify-content-center">
-        <h1 class="text-center">This is the home page!</h1>
+    <div class="row justify-content-center landingContent">
+        <div class="col-12 col-md-6">
+            <h1>Harness the power of your link</h1>  
+            <p class="pt-2">
+                Unitedly connect your network with the effectiveness of a single link to manage and direct traffic to your portfolio.
+            </p>
+            <a href="/register">
+                <button type="submit" class="btn btn-lg btn-primary actionCallButton">Sign up</button>
+            </a>
+            
+        </div>
+        <div class="col-12 col-md-6">
+            <img src= "/imgs/iphone.png" id="iphoneDisp">
+        </div>
+        
+        
     </div>
-    <div class="row justify-content-center">
+    </div>
+    <section id="howItWorksSection">
+        <div class="container">
+        <div class="row justify-content-center">
+            <h1 class="text-center">How It Works</h1>
+            <p class="workDescription text-center">Your personalized link lets your followers access multiple links from your profile, giving you the freedom to share more content.</p>
+            <div class="col-12 col-md-4 phoneCols">
+                 <img src= "/imgs/iphone.png" class="iphoneWork">
+                 <div class="numbers">1</div>
+                 <h4>Create your LinkUp Account</h2>
+                 <p>Choose a username, customize your profile, and add your links.</p>
+            </div>
+            <div class="col-12 col-md-4 phoneCols">
+                <img src= "/imgs/iphone.png" class="iphoneWork">
+                <div class="numbers">2</div>
+                <h4>Get more out of your link</h1>
+                <p>Copy your link and use it across any social platform.</p>
+            </div>
+            <div class="col-12 col-md-4 phoneCols">
+                <img src= "/imgs/iphone.png" class="iphoneWork">
+                <div class="numbers">3</div>
+                <h4>Share more of your content</h2>
+                <p>Give your followers access to more with one powerful link.</p>
+            </div>
+            <a href="/register">
+                <button type="submit" class="btn btn-lg btn-primary actionCallButton">Create Your Link</button>
+            </a>
+        </div>
+        </div>
+
+    </section>
+    
+    <section id="pricing">
+        <div class="container">
+        <div class="row justify-content-center">
+            <div class="title">
+                <h1 class="text-center">Pricing</h1>
+                <p class="text-center">Try LinkUp for free</p>
+            </div>
+
+        </div>
+        </div>
+
+    </section>
+    <section class="pricing py-5">
+  <div class="container">
+    <div class="row">
+      <!-- Free Tier -->
+      <div class="col-lg-4">
+        <div class="card mb-5 mb-lg-0">
+          <div class="card-body">
+            <h5 class="card-title text-muted text-uppercase text-center">Free</h5>
+            <h6 class="card-price text-center">$0<span class="period">/month</span></h6>
+            <hr>
+            <ul class="fa-ul">
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>A single link with up to 5 destinations.</li>
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>Manage and update links</li>
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>Live cutomer support</li>
+
+            <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Advanced Theme and Link Customization</li>
+              <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Real Time Analytics</li>
+            </ul>
+            <a href="/register" class="btn btn-block btn-primary text-uppercase">Sign Up For Free!</a>
+          </div>
+        </div>
+      </div>
+      <!-- Pro Tier -->
+      <div class="col-lg-4">
+        <div class="card mb-5 mb-lg-0">
+          <div class="card-body">
+            <h5 class="card-title text-muted text-uppercase text-center">Pro</h5>
+            <h6 class="card-price text-center">$9<span class="period">/month</span></h6>
+            <hr>
+            <ul class="fa-ul">
+              <li><span class="fa-li"><i class="fas fa-check"></i></span><strong>A single link with unlimited destinations.</strong></li>
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>Manage and update links</li>
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>Live cutomer support</li>
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>Advanced Theme and Link Customization</li>
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>Real Time Analytics</li>
+            </ul>
+            <a href="/register" class="btn btn-block btn-primary text-uppercase">Sign Up</a>
+          </div>
+        </div>
+      </div>
+      <!-- Custom Tier -->
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title text-muted text-uppercase text-center">CUSTOM</h5>
+            <h6 class="card-price text-center">$15+<span class="period">/month</span></h6>
+            <hr>
+            <ul class="fa-ul">
+              <li><span class="fa-li"><i class="fas fa-check"></i></span><strong>Custom domain name</strong> (i.e. yourname.com)</li>
+              
+              <li><span class="fa-li"><i class="fas fa-check"></i></span><strong>A single link with unlimited destinations.</strong></li>
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>Manage and update links</li>
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>Live cutomer support</li>
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>Advanced Theme and Link Customization</li>
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>Real Time Analytics</li>
+            </ul>
+            <a href="#" class="btn btn-block btn-primary text-uppercase">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    
+    
+    
+    
+    
+    <div class="row justify-content-center pt-5">
                 <% if(currentUser){ %>
             <a href="/<%= currentUser.username%>">
                 <button type="button" class="btn btn-outline-success"><%= currentUser.username%>'s LinkUp Page</button>
             </a>
         <% } %>
     </div>
+    
+    
+    
 </div>
 
 
