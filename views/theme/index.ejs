@@ -44,12 +44,14 @@
         
           <button>Submit Payment</button>
         </form>
+        
+        
+            <h2>Stripe Checkout Example</h2>
+
+    <div id="shop">
+      <button id="buttonCheckout">Checkout</button>
+    </div>
 </div>
-
-
-<script>
-
-</script>
 
 
         
@@ -111,10 +113,11 @@
          });
         
      });
-
+     
+     // STRIPE PAYMENT JAVASCRIPT 
     // Create a Stripe client.
     var stripe = Stripe('pk_test_ZGCZqSj3pxzY8JyHVjFTBDa600PRzBVGJG');
-    
+
     // Create an instance of Elements.
     var elements = stripe.elements();
     
@@ -164,24 +167,72 @@
           errorElement.textContent = result.error.message;
         } else {
           // Send the token to your server.
-          stripeTokenHandler(result.token);
+          stripeTokenHandler(result.token, result.error);
         }
       });
     });
     
     // Submit the form with the token ID.
-    function stripeTokenHandler(token) {
+    function stripeTokenHandler(token, tokenerr) {
       // Insert the token ID into the form so it gets submitted to the server
       var form = document.getElementById('payment-form');
       var hiddenInput = document.createElement('input');
       hiddenInput.setAttribute('type', 'hidden');
       hiddenInput.setAttribute('name', 'stripeToken');
-      hiddenInput.setAttribute('value', token.id);
+      hiddenInput.setAttribute('value', JSON.stringify(token.id));
       form.appendChild(hiddenInput);
+      
     
       // Submit the form
       form.submit();
     }
+    
+    var checkoutHandler = StripeCheckout.configure({
+  key: "pk_live_ulRi0y5JZqC2OTQEZqxKbmpC00pzBU0rsV",
+  locale: "auto"
+});
+
+
+// CHECKOUT
+
+
+var button = document.getElementById("buttonCheckout");
+button.addEventListener("click", function(ev) {
+  checkoutHandler.open({
+    name: "Sample Store",
+    description: "Example Purchase",
+    token: handleToken
+  });
+});
+
+function handleToken(token) {
+  fetch("/charge", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(token)
+  })
+  .then(output => {
+    if (output.status === "succeeded")
+      document.getElementById("shop").innerHTML = "<p>Purchase complete!</p>";
+  })
+}
+
+fetch("/charge", {
+  method: "POST",
+  headers: {"Content-Type": "application/json"},
+  body: JSON.stringify(token)
+})
+.then(response => {
+  if (!response.ok)
+    throw response;
+  return response.json();
+})
+.then(output => {
+  console.log("Purchase succeeded:", output);
+})
+.catch(err => {
+  console.log("Purchase failed:", err);
+})
     
 </script>
 </html>

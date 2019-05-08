@@ -15,7 +15,8 @@ var middleware              = require("./middleware");
 
 // This is to store passwords
 require('dotenv').config();
-
+// Configure stripe payments
+const stripe                = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 
 //  ============================================================= //
@@ -140,6 +141,32 @@ app.post("/login", passport.authenticate("local", {
     failureFlash: true
 }) ,function(req, res){
     res.redirect("/" + req.user.username)
+    
+});
+// PAYMENT LOGIC
+
+app.post("/charge", function(req, res) {
+    // res.send("Here is the token:", req.body.stripeToken);
+      let amount = 10;
+
+  stripe.customers.create({
+    email: req.body.email,
+    card: req.body.id
+  })
+  .then(customer =>
+    stripe.charges.create({
+      amount,
+      description: "Sample Charge",
+      currency: "cad",
+      customer: customer.id
+    }))
+  .then(charge => res.send(charge))
+  .catch(err => {
+    console.log("Error:", err);
+    res.status(500).send({error: "Purchase Failed"});
+  });
+    
+
     
 });
 
