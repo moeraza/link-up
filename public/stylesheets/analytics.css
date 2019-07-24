@@ -1,0 +1,36 @@
+table#tablenew {
+    padding: 20px; 
+    width: 400px;
+    height: 150px; 
+}
+
+#tablenew td, tr {
+    text-align: center;
+}
+
+/*#tablenew tr {*/
+/*    text-align: center;*/
+/*}*/
+
+#tablenew thead tr {
+    font-size: 1.2rem;
+    border-bottom-color: #8395a7;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    
+}
+
+div.borderofTable {
+    border-radius: 15px 50px;
+    border: 2px solid #8395a7;
+    margin: 50px 250px;
+    padding: 20px 0px;
+    margin-bottom: 80px;
+    
+}
+
+@media all and (max-width:30em){
+    div.borderofTable {
+        margin: 7% 2%;
+    }
+}

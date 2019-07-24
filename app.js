@@ -17,7 +17,7 @@ var middleware              = require("./middleware");
 require('dotenv').config();
 // Configure stripe payments
 const stripe                = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
+const keyPublishable = process.env.STRIPE_PUBLISHABLE_KEY;
 
 //  ============================================================= //
 // Requirments to configure cloudinary and mutler for image upload
@@ -106,7 +106,8 @@ app.post("/register", function(req, res){
         linkone: req.body.linkone,
         linktwo: req.body.linktwo,
         linkthree: req.body.linkthree,
-        themeColor: defaultBackground
+        themeColor: defaultBackground,
+        paid: "no"
     });
     User.register(newUser, req.body.password, function(err, user){
         if(err){
@@ -168,6 +169,19 @@ app.post("/charge", function(req, res) {
     
 
     
+});
+
+app.get("/success", function(req, res){
+    User.findOne({username: req.user.username}, function(err, foundUser) {
+    if(err){
+        console.log("error, could not find user", err);
+    } else {
+        foundUser.paid = "yes"
+        foundUser.save();
+        res.redirect("/"+ req.user.username)
+    }
+    
+});
 });
 
 app.get("/:username/profile", function(req, res){
@@ -473,6 +487,6 @@ app.get("/:username/analytics", middleware.checkPageOwnership, function(req, res
 });
 
 
-app.listen(process.env.PORT, process.env.IP, function(){
+app.listen(4000, process.env.IP, function(){
     console.log("linkUp Server Started.....");
 });

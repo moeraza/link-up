@@ -1,6 +1,6 @@
 <% include ../partials/header %>
 
-<div class="container">
+<div class="container colorBoxes">
     <div class="row justify-content-center">
         <div class= "col-12 col-md-6 text-center" id="colorPicker">
             <h1> Pick Theme Color</h1>
@@ -22,45 +22,76 @@
                     <input type="radio" name="radio" value="pink">
                   <span class="checkmark"></span>
                 </label>
+                <label class="radioContainer paidBox1">Miamai Dolphins <i class="fas fa-lock"></i>
+                    <input type="radio" name="radio" value="pink">
+                  <span class="checkmark"></span>
+                </label>
+                <label class="radioContainer paidBox2">Grade Grey <i class="fas fa-lock"></i>
+                    <input type="radio" name="radio" value="pink">
+                  <span class="checkmark"></span>
+                </label>
 
                 <!--<button type="submit" class="btn btn-lg btn-primary btn-block">Submit Theme!</button>-->
               </form>
 
         </div>
     </div>
-    <script src="https://js.stripe.com/v3/"></script>
-        <form action="/charge" method="post" id="payment-form">
-          <div class="form-row">
-            <label for="card-element">
-              Credit or debit card
-            </label>
-            <div id="card-element">
-              <!-- A Stripe Element will be inserted here. -->
-            </div>
-        
-            <!-- Used to display form errors. -->
-            <div id="card-errors" role="alert"></div>
-          </div>
-        
-          <button>Submit Payment</button>
-        </form>
-        
-        
-            <h2>Stripe Checkout Example</h2>
+    
+<!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
+<button
+  style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
+  id="checkout-button-plan_F6WPBCXuWZh5Nb"
+  role="link"
+>
+  Checkout
+</button>
 
-    <div id="shop">
-      <button id="buttonCheckout">Checkout</button>
-    </div>
-</div>
+<div id="error-message"></div>
 
 
         
+
+            
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
     </body>
     <script type="text/javascript" src="/js/index.js"></script>
     <script src="/js/jquery.js"></script>
+
+<script>
+  var stripe = Stripe('pk_live_ulRi0y5JZqC2OTQEZqxKbmpC00pzBU0rsV');
+
+  var checkoutButton = document.getElementById('checkout-button-plan_F6WPBCXuWZh5Nb');
+  checkoutButton.addEventListener('click', function () {
+    // When the customer clicks on the button, redirect
+    // them to Checkout.
+    stripe.redirectToCheckout({
+      items: [{plan: 'plan_F6WPBCXuWZh5Nb', quantity: 1}],
+
+      // Do not rely on the redirect to the successUrl for fulfilling
+      // purchases, customers may not always reach the success_url after
+      // a successful payment.
+      // Instead use one of the strategies described in
+      // https://stripe.com/docs/payments/checkout/fulfillment
+      successUrl: window.location.protocol + '//www.lnkup.co/success',
+      cancelUrl: window.location.protocol + '//www.lnkup.co/canceled',
+    })
+    .then(function (result) {
+      if (result.error) {
+        // If `redirectToCheckout` fails due to a browser or network
+        // error, display the localized error message to your customer.
+        var displayError = document.getElementById('error-message');
+        displayError.textContent = result.error.message;
+      }
+    });
+  });
+</script>
+     
+        
+        
+    
 <script>
 
     // $("ul").on("click", "li", function(){
@@ -113,126 +144,7 @@
          });
         
      });
-     
-     // STRIPE PAYMENT JAVASCRIPT 
-    // Create a Stripe client.
-    var stripe = Stripe('pk_test_ZGCZqSj3pxzY8JyHVjFTBDa600PRzBVGJG');
-
-    // Create an instance of Elements.
-    var elements = stripe.elements();
-    
-    // Custom styling can be passed to options when creating an Element.
-    // (Note that this demo uses a wider set of styles than the guide below.)
-    var style = {
-      base: {
-        color: '#32325d',
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: 'antialiased',
-        fontSize: '16px',
-        '::placeholder': {
-          color: '#aab7c4'
-        }
-      },
-      invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a'
-      }
-    };
-    
-    // Create an instance of the card Element.
-    var card = elements.create('card', {style: style});
-    
-    // Add an instance of the card Element into the `card-element` <div>.
-    card.mount('#card-element');
-    
-    // Handle real-time validation errors from the card Element.
-    card.addEventListener('change', function(event) {
-      var displayError = document.getElementById('card-errors');
-      if (event.error) {
-        displayError.textContent = event.error.message;
-      } else {
-        displayError.textContent = '';
-      }
-    });
-    
-    // Handle form submission.
-    var form = document.getElementById('payment-form');
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-    
-      stripe.createToken(card).then(function(result) {
-        if (result.error) {
-          // Inform the user if there was an error.
-          var errorElement = document.getElementById('card-errors');
-          errorElement.textContent = result.error.message;
-        } else {
-          // Send the token to your server.
-          stripeTokenHandler(result.token, result.error);
-        }
-      });
-    });
-    
-    // Submit the form with the token ID.
-    function stripeTokenHandler(token, tokenerr) {
-      // Insert the token ID into the form so it gets submitted to the server
-      var form = document.getElementById('payment-form');
-      var hiddenInput = document.createElement('input');
-      hiddenInput.setAttribute('type', 'hidden');
-      hiddenInput.setAttribute('name', 'stripeToken');
-      hiddenInput.setAttribute('value', JSON.stringify(token.id));
-      form.appendChild(hiddenInput);
-      
-    
-      // Submit the form
-      form.submit();
-    }
-    
-    var checkoutHandler = StripeCheckout.configure({
-  key: "pk_live_ulRi0y5JZqC2OTQEZqxKbmpC00pzBU0rsV",
-  locale: "auto"
-});
+  </script>
 
 
-// CHECKOUT
-
-
-var button = document.getElementById("buttonCheckout");
-button.addEventListener("click", function(ev) {
-  checkoutHandler.open({
-    name: "Sample Store",
-    description: "Example Purchase",
-    token: handleToken
-  });
-});
-
-function handleToken(token) {
-  fetch("/charge", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify(token)
-  })
-  .then(output => {
-    if (output.status === "succeeded")
-      document.getElementById("shop").innerHTML = "<p>Purchase complete!</p>";
-  })
-}
-
-fetch("/charge", {
-  method: "POST",
-  headers: {"Content-Type": "application/json"},
-  body: JSON.stringify(token)
-})
-.then(response => {
-  if (!response.ok)
-    throw response;
-  return response.json();
-})
-.then(output => {
-  console.log("Purchase succeeded:", output);
-})
-.catch(err => {
-  console.log("Purchase failed:", err);
-})
-    
-</script>
 </html>

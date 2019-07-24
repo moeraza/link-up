@@ -394,9 +394,17 @@ margin:0.2em auto;
 
 /*====================== STYLING FOR RADIO BUTTONS ====================== */
 
+
+.colorBoxes {
+  margin-top: 2rem;
+}
+
+.colorBoxes form {
+  margin-top: 1.5rem;
+}
 /* The radioContainer */
 .radioContainer {
-  display: -webkit-inline-box;
+  display: inline-flex;
   position: relative;
   padding: 50px 50px;
   margin-bottom: 12px;
@@ -407,6 +415,32 @@ margin:0.2em auto;
   -ms-user-select: none;
   user-select: none;
   border-radius: 10%;
+  height: 137px;
+  width: 137px;
+  align-items: center;
+  justify-content: center;
+
+}
+
+@media all and (max-width:30em){
+.radioContainer {
+  display: inline-flex;
+  position: relative;
+  padding: 50px 50px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border-radius: 10%;
+  height: 137px;
+  width: 137px;
+  align-items: normal;
+  justify-content: center;
+
+}
 }
 
 .greenBox {
@@ -432,6 +466,21 @@ margin:0.2em auto;
   background: #ee9ca7;  /* fallback for old browsers */
   background: -webkit-linear-gradient(180deg, #ffdde1, #ee9ca7);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(180deg, #ffdde1, #ee9ca7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.paidBox1 {
+  
+  background: #4DA0B0;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(180deg, #D39D38, #4DA0B0);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(180deg, #D39D38, #4DA0B0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.paidBox2 {
+  background: #bdc3c7;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(180deg, #2c3e50, #bdc3c7);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(180deg, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 }
 
@@ -564,6 +613,7 @@ figure figcaption {
 /*====================== FOOTRER STYLING ==========================*/
 
 footer {
+
   color: grey;
   font-size: 0.75rem;
   position: relative;
