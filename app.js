@@ -38,20 +38,21 @@ var imageFilter = function (req, file, cb) {
 var upload = multer({ storage: storage, fileFilter: imageFilter})
 
 var cloudinary = require('cloudinary');
-cloudinary.config({ 
-  cloud_name: 'datalchemy-ai', 
-  api_key: process.env.CLOUDINARY_API_KEY, 
+cloudinary.config({
+  cloud_name: 'datalchemy-ai',
+  api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 // ============================================================= //
-    
-mongoose.connect("mongodb://localhost/linkup");
+
+// mongoose.connect("mongodb://localhost/linkup");
+mongoose.connect("mongodb+srv://raza:raza6478337641@lnkupdb-ebuff.mongodb.net/test?retryWrites=true&w=majority")
 var app = express();
 app.set('view engine', 'ejs');
 app.use(methodOverride("_method"));
 app.use(express.static(__dirname + "/public"));
-app.use(bodyParser.urlencoded({extended: true, 
+app.use(bodyParser.urlencoded({extended: true,
                                 limit:'50mb'
 }));
 app.use(flash());
@@ -89,11 +90,11 @@ app.get("/", function(req, res){
 
 //show sign up form
 app.get("/register", function(req, res){
-   res.render("register"); 
+   res.render("register");
 });
 
 var defaultBackground = "background: #6190E8;  /* fallback for old browsers */ background: -webkit-linear-gradient(180deg, #A7BFE8, #6190E8);  /* Chrome 10-25, Safari 5.1-6 */  background: linear-gradient(180deg, #A7BFE8, #6190E8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "
-                            
+
 //handling user sign up
 app.post("/register", function(req, res){
     var newUser = new User({
@@ -121,7 +122,7 @@ app.post("/register", function(req, res){
         })(req, res, function(err, user){
         if(err){
             req.flash(err);
-        } 
+        }
             req.flash("success", "Welcome to LinkUp " + user.username);
             res.redirect("/" + user.username);
         });
@@ -131,7 +132,7 @@ app.post("/register", function(req, res){
 // LOGIN ROUTES
 //render login form
 app.get("/login", function(req, res){
-   res.render("login"); 
+   res.render("login");
 });
 
 //login logic
@@ -142,7 +143,7 @@ app.post("/login", passport.authenticate("local", {
     failureFlash: true
 }) ,function(req, res){
     res.redirect("/" + req.user.username)
-    
+
 });
 // PAYMENT LOGIC
 
@@ -166,9 +167,9 @@ app.post("/charge", function(req, res) {
     console.log("Error:", err);
     res.status(500).send({error: "Purchase Failed"});
   });
-    
 
-    
+
+
 });
 
 app.get("/success", function(req, res){
@@ -180,12 +181,12 @@ app.get("/success", function(req, res){
         foundUser.save();
         res.redirect("/"+ req.user.username)
     }
-    
+
 });
 });
 
 app.get("/:username/profile", function(req, res){
-   res.render("profile/"); 
+   res.render("profile/");
 });
 // LOGOUT LOGIC
 app.get("/logout", function(req, res){
@@ -197,7 +198,7 @@ app.get("/logout", function(req, res){
 
 // SHOW - USER PROFILE w/ links
 app.get("/:username", function(req, res) {
-            
+
     Link.find({"author.username": req.params.username}, function(err, foundLinks){
         if(err){
             console.log("Ran into error finding links",err);
@@ -217,7 +218,7 @@ app.get("/:username", function(req, res) {
 
         }
     });
-        
+
 });
 // ========================================================================== //
 // Edit Theme
@@ -245,11 +246,11 @@ app.post("/:username/theme", function(req, res) {
             console.log("Okay we found user", foundUser);
             foundUser.themeColor = colorTheme[chosenColor];
             foundUser.save();
-            res.redirect("/"+ req.params.username); 
+            res.redirect("/"+ req.params.username);
         }
-        
+
     })
-    
+
 });
 // ========================================================================== //
 // Edit Profile
@@ -271,7 +272,7 @@ app.get("/:username/customize/custom", middleware.checkPageOwnership, function(r
             })
 
         }
-        
+
     });
 });
 
@@ -281,8 +282,8 @@ app.put("/:username/customize", middleware.checkPageOwnership, upload.single('im
 
     // res.send(profileData);
     var profileData = {
-                        displayName: req.body.displayName, 
-                        location: req.body.location, 
+                        displayName: req.body.displayName,
+                        location: req.body.location,
                         bio: req.body.bioTextBox
     };
     User.findByIdAndUpdate(req.user._id, profileData, function(err,  updateProfile){
@@ -291,7 +292,7 @@ app.put("/:username/customize", middleware.checkPageOwnership, upload.single('im
        } else {
            res.redirect("/"+req.params.username);
        }
-    });  
+    });
 
 
 });
@@ -308,17 +309,17 @@ app.post("/:username/picupload", middleware.isLoggedIn, upload.single('image'), 
            }
            res.redirect("/" + req.params.username + "/picupload/edit");
        });
-        
+
     });
 });
 
 app.get("/:username/picupload/edit", function(req, res) {
-   res.render("customize/editpic", {thisUser: req.user}) 
+   res.render("customize/editpic", {thisUser: req.user})
 });
 
 app.post("/:username/picupload/edit/post", function(req, res) {
     cloudinary.v2.uploader.upload(req.body.imgInputField, function(error, result) {
-        console.log(result, error); 
+        console.log(result, error);
         var newImage = {avatar: result.secure_url};
         User.findByIdAndUpdate(req.user._id, newImage, function(err, updatedImage) {
            if (err) {
@@ -327,7 +328,7 @@ app.post("/:username/picupload/edit/post", function(req, res) {
            }
            res.redirect("/" + req.params.username);
        });
-        
+
     });
 
 
@@ -336,7 +337,7 @@ app.post("/:username/picupload/edit/post", function(req, res) {
 
 
 // ========================================================================== //
-// LINKS - Creating, editing, deleting, updating. 
+// LINKS - Creating, editing, deleting, updating.
 // ========================================================================== //
 
 // CREATE - add new link
@@ -358,7 +359,7 @@ app.post("/:username", middleware.isLoggedIn, function(req, res) {
     name: req.body.name,
     text: "http://" + req.body.text
   };
-  
+
   User.findOne({username: req.params.username}, function(err, foundUser) {
       if(err){
           console.log("errror found:", err)
@@ -376,7 +377,7 @@ app.post("/:username", middleware.isLoggedIn, function(req, res) {
                   console.log(link);
                   req.flash("success", "Successfully added link");
                   res.redirect("/" + foundUser.username);
-                  
+
               }
           });
       }
@@ -438,7 +439,7 @@ app.post('/:username/:link_id', function(req, res){
   console.log("Here is the generated click from server:", newClick);
   console.log("Here is the user name:", req.params.username);
   console.log("Here is the link id :", req.params.link_id);
-  
+
   Link.findById(req.params.link_id, function(err, foundLink){
       if(err){
           console.log(err);
@@ -456,15 +457,15 @@ app.post('/:username/:link_id', function(req, res){
                   console.log("Here is the association", foundLink);
                   req.flash("success", "Successfully added click");
                   res.redirect(foundLink.text);
-                  
+
               }
-              
+
           });
-          
+
       }
-      
+
   });
-    
+
 });
 
 
@@ -487,6 +488,6 @@ app.get("/:username/analytics", middleware.checkPageOwnership, function(req, res
 });
 
 
-app.listen(4000, process.env.IP, function(){
+app.listen(5000, process.env.IP, function(){
     console.log("linkUp Server Started.....");
 });
