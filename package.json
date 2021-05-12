@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.14.1",
-    "chart.js": "^2.8.0",
+    "chart.js": "^2.9.4",
     "cloudinary": "^1.14.0",
     "connect-flash": "^0.1.1",
     "croppie": "^2.6.4",
