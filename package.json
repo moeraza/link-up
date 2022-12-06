@@ -16,7 +16,7 @@
     "croppie": "^2.6.4",
     "dotenv": "^7.0.0",
     "ejs": "^2.3.4",
-    "express": "^4.13.3",
+    "express": "^4.17.3",
     "express-session": "^1.11.3",
     "method-override": "^3.0.0",
     "mongoose": "^5.1.3",
